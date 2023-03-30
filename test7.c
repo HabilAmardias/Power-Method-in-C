@@ -76,7 +76,7 @@ int main()
         // menghitung error
         double arr[N];
         int f = sizeof(arr) / sizeof(arr[0]);
-
+#pragma omp parallel for private(i) shared(arr, x, y, yp)
         for (i = 0; i < f; i++)
         {
             arr[i] = fabs(x[i] - (y[i] / yp));
@@ -96,16 +96,12 @@ int main()
                 }
             }
         }
-        // mengupdate vektor x
+// mengupdate vektor x
+#pragma omp parallel for private(i) shared(x, y, yp)
         for (i = 0; i < N; i++)
         {
             x[i] = y[i] / yp;
-        }
-// print vektor x
-#pragma omp parallel for private(i)
-        for (i = 0; i < N; i++)
-        {
-            printf("%lf\t", x[i]);
+            printf("%lf\n", x[i]);
         }
         printf("\n");
         // print error
