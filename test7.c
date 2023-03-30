@@ -48,7 +48,7 @@ int main()
     // mulai algoritma
     for (iter = 0; iter < MAX_ITER; iter++)
     {
-        // y=A*x
+// y=A*x
 #pragma omp parallel for private(i, j) shared(A, x, y)
         for (i = 0; i < N; i++)
         {
