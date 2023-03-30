@@ -4,7 +4,7 @@
 #include <time.h>
 #include <math.h>
 
-#define N 500
+#define N 700
 #define MAX_ITER 1000
 
 int main()
@@ -89,9 +89,11 @@ int main()
         {
             double abs_val_1 = arr[i];
 #pragma omp critical
-            if (abs_val_1 > err)
             {
-                err = abs_val_1;
+                if (abs_val_1 > err)
+                {
+                    err = abs_val_1;
+                }
             }
         }
         // mengupdate vektor x
