@@ -34,16 +34,6 @@ int main()
         }
         x[i] = 1;
     }
-// print Matrix A
-#pragma omp parallel for private(i, j)
-    for (i = 0; i < N; i++)
-    {
-        for (j = 0; j < N; j++)
-        {
-            printf("%d ", A[i][j]);
-        }
-        printf("\n");
-    }
 
     // mulai algoritma
     for (iter = 0; iter < MAX_ITER; iter++)
