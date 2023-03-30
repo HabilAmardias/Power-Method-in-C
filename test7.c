@@ -16,8 +16,16 @@ int main()
     double lam_0 = 0.0;
     double lam_1 = 0.0;
     int i, j, k, iter;
+    // define jumlah thread yang digunakan
+    int num_threads = 12;
+    clock_t start_time, end_time;
+    double cpu_time_used;
+    omp_set_num_threads(num_threads);
+    // mencatat waktu awal sebelum algoritma dimulai
+    start_time = clock();
 
-    // membentuk matrix ukuran nxn dengan nilai random
+// membentuk matrix ukuran nxn dengan nilai random
+#pragma omp parallel for private(i, j) shared(A, x)
     for (i = 0; i < N; i++)
     {
         for (j = 0; j < N; j++)
@@ -26,13 +34,7 @@ int main()
         }
         x[i] = 1;
     }
-
-    // define jumlah thread yang digunakan
-    int num_threads = 12;
-    clock_t start_time, end_time;
-    double cpu_time_used;
-    omp_set_num_threads(num_threads);
-
+// print Matrix A
 #pragma omp parallel for private(i, j)
     for (i = 0; i < N; i++)
     {
@@ -42,8 +44,7 @@ int main()
         }
         printf("\n");
     }
-    // mencatat waktu awal sebelum algoritma dimulai
-    start_time = clock();
+
     // mulai algoritma
     for (iter = 0; iter < MAX_ITER; iter++)
     {
