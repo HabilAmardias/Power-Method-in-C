@@ -4,7 +4,7 @@
 #include <time.h>
 #include <math.h>
 
-#define N 100
+#define N 500
 #define MAX_ITER 1000
 
 int main()
