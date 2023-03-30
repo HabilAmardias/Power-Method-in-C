@@ -27,6 +27,7 @@ int main()
         x[i] = 1;
     }
 
+    // define jumlah thread yang digunakan
     int num_threads = 12;
     clock_t start_time, end_time;
     double cpu_time_used;
@@ -41,7 +42,9 @@ int main()
         }
         printf("\n");
     }
+    // mencatat waktu awal sebelum algoritma dimulai
     start_time = clock();
+    // mulai algoritma
     for (iter = 0; iter < MAX_ITER; iter++)
     {
 // y=A*x
@@ -54,7 +57,7 @@ int main()
                 y[i] += A[i][j] * x[j];
             }
         }
-
+        // yp = max(|y|)
         int n = sizeof(y) / sizeof(y[0]);
         double yp = fabs(y[0]);
 #pragma omp parallel for shared(yp)
@@ -69,13 +72,17 @@ int main()
                 }
             }
         }
+        // lam=yp
         double lam = yp;
+        // mempercepat konvergensi menggunakan aitken method
         double lam_aitken = lam_0 - ((lam_1 - lam_0) * (lam_1 - lam_0) / (lam - 2 * lam_1 + lam_0));
         printf("Approx Dominant Eigenvalue: %lf\n", lam_aitken);
+        // jika yp=0 stop
         if (yp == 0)
         {
             break;
         }
+        // menghitung error
         double arr[N];
         int f = sizeof(arr) / sizeof(arr[0]);
 
@@ -96,18 +103,21 @@ int main()
                 err = abs_val_1;
             }
         }
-
+        // mengupdate vektor x
         for (i = 0; i < N; i++)
         {
             x[i] = y[i] / yp;
         }
+        // print vektor x
 #pragma omp parallel for private(i)
         for (i = 0; i < N; i++)
         {
             printf("%lf\t", x[i]);
         }
         printf("\n");
+        // print error
         printf("Error: %lf\n", err);
+        // jika error < tol, stop algoritma
         if (err < tol && iter >= 4)
         {
             break;
@@ -115,7 +125,9 @@ int main()
         lam_0 = lam_1;
         lam_1 = lam;
     }
+    // memcatat waktu akhir
     end_time = clock();
+    // menghitung running time berdasarkan waktu akhir dan waktu awal
     cpu_time_used = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
     printf("-----------------------------------\n");
     printf("CPU time used: %lf seconds", cpu_time_used);
