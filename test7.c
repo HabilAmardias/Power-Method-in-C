@@ -47,7 +47,7 @@ int main()
     // mulai algoritma
     for (iter = 0; iter < MAX_ITER; iter++)
     {
-// y=A*x
+        // y=A*x
 #pragma omp parallel for private(i, j) shared(A, x, y)
         for (i = 0; i < N; i++)
         {
@@ -60,7 +60,7 @@ int main()
         // yp = max(|y|)
         int n = sizeof(y) / sizeof(y[0]);
         double yp = fabs(y[0]);
-#pragma omp parallel for shared(yp)
+#pragma omp parallel for shared(yp, abs_val)
         for (i = 1; i < n; i++)
         {
             double abs_val = fabs(y[i]);
@@ -93,7 +93,7 @@ int main()
 
         double err = arr[0];
 
-#pragma omp parallel for shared(err)
+#pragma omp parallel for shared(err, abs_val_1)
         for (i = 1; i < f; i++)
         {
             double abs_val_1 = arr[i];
@@ -108,7 +108,7 @@ int main()
         {
             x[i] = y[i] / yp;
         }
-        // print vektor x
+// print vektor x
 #pragma omp parallel for private(i)
         for (i = 0; i < N; i++)
         {
