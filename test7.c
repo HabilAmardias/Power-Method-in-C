@@ -32,7 +32,7 @@ int main()
         {
             A[i][j] = rand();
         }
-        x[i] = 1;
+        x[i] = 1.0;
     }
 
     // mulai algoritma
