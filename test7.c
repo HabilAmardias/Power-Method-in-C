@@ -51,7 +51,7 @@ int main()
         // yp = max(|y|)
         int n = sizeof(y) / sizeof(y[0]);
         double yp = fabs(y[0]);
-#pragma omp parallel for shared(yp)
+#pragma omp parallel for private(i) shared(yp)
         for (i = 1; i < n; i++)
         {
             double abs_val = fabs(y[i]);
@@ -84,7 +84,7 @@ int main()
 
         double err = arr[0];
 
-#pragma omp parallel for shared(err)
+#pragma omp parallel for private(i) shared(err)
         for (i = 1; i < f; i++)
         {
             double abs_val_1 = arr[i];
@@ -114,6 +114,7 @@ int main()
         lam_0 = lam_1;
         lam_1 = lam;
     }
+    printf("Iteration Count: %d\n", iter + 1);
     // memcatat waktu akhir
     end_time = clock();
     // menghitung running time berdasarkan waktu akhir dan waktu awal
