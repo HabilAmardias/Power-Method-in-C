@@ -60,7 +60,7 @@ int main()
         // yp = max(|y|)
         int n = sizeof(y) / sizeof(y[0]);
         double yp = fabs(y[0]);
-#pragma omp parallel for shared(yp, abs_val)
+#pragma omp parallel for shared(yp)
         for (i = 1; i < n; i++)
         {
             double abs_val = fabs(y[i]);
@@ -93,7 +93,7 @@ int main()
 
         double err = arr[0];
 
-#pragma omp parallel for shared(err, abs_val_1)
+#pragma omp parallel for shared(err)
         for (i = 1; i < f; i++)
         {
             double abs_val_1 = arr[i];
