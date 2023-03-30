@@ -101,7 +101,7 @@ int main()
         {
             x[i] = y[i] / yp;
         }
-#pragma omp parallel for private(i, j)
+#pragma omp parallel for private(i)
         for (i = 0; i < N; i++)
         {
             printf("%lf\t", x[i]);
