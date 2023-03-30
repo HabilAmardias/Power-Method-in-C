@@ -12,7 +12,7 @@ int main()
     int A[N][N];
     double x[N];
     double y[N];
-    double tol = 1e-6;
+    double tol = 0.000001;
     double lam_0 = 0.0;
     double lam_1 = 0.0;
     int i, j, k, iter;
