@@ -25,7 +25,7 @@ int main()
     start_time = clock();
 
 // membentuk matrix ukuran nxn dengan nilai random
-#pragma omp parallel for private(i, j) shared(A, x)
+#pragma omp parallel for private(i, j)
     for (i = 0; i < N; i++)
     {
         for (j = 0; j < N; j++)
@@ -39,12 +39,13 @@ int main()
     for (iter = 0; iter < MAX_ITER; iter++)
     {
 // y=A*x
-#pragma omp parallel for private(i, j) shared(A, x, y)
+#pragma omp parallel for private(i, j)
         for (i = 0; i < N; i++)
         {
             y[i] = 0.0;
             for (j = 0; j < N; j++)
             {
+#pragma omp atomic
                 y[i] += A[i][j] * x[j];
             }
         }
@@ -76,7 +77,7 @@ int main()
         // menghitung error
         double arr[N];
         int f = sizeof(arr) / sizeof(arr[0]);
-#pragma omp parallel for private(i) shared(arr, x, y, yp)
+#pragma omp parallel for private(i) shared(yp)
         for (i = 0; i < f; i++)
         {
             arr[i] = fabs(x[i] - (y[i] / yp));
@@ -97,7 +98,7 @@ int main()
             }
         }
 // mengupdate vektor x
-#pragma omp parallel for private(i) shared(x, y, yp)
+#pragma omp parallel for private(i) shared(yp)
         for (i = 0; i < N; i++)
         {
             x[i] = y[i] / yp;
