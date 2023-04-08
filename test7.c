@@ -56,7 +56,6 @@ int main()
         for (i = 1; i < n; i++)
         {
             double abs_val = fabs(y[i]);
-#pragma omp critical
             {
                 if (abs_val > yp)
                 {
@@ -89,7 +88,6 @@ int main()
         for (i = 1; i < f; i++)
         {
             double abs_val_1 = arr[i];
-#pragma omp critical
             {
                 if (abs_val_1 > err)
                 {
