@@ -93,6 +93,7 @@ int main()
                 }
             }
         }
+        printf("Approx Dominant Eigenvector:\n");
 // mengupdate vektor x
 #pragma omp parallel for private(i) shared(x, y, yp)
         for (i = 0; i < N; i++)
