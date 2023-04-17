@@ -22,7 +22,7 @@ int main()
     clock_t start_time, end_time;
     double cpu_time_used;
 
-    // membentuk matrix ukuran nxn dengan nilai random
+    // membentuk matrix A ukuran nxn
     for (i = 0; i < N; i++)
     {
         for (j = 0; j < N; j++)
