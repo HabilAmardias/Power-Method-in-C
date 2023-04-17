@@ -20,7 +20,7 @@ int main()
     int num_threads = 12;
     omp_set_num_threads(num_threads);
     clock_t start_time, end_time;
-    double cpu_time_used;
+    double time_used;
 
     // membentuk matrix A ukuran nxn
     for (i = 0; i < N; i++)
@@ -120,8 +120,8 @@ int main()
     // memcatat waktu akhir
     end_time = clock();
     // menghitung running time berdasarkan waktu akhir dan waktu awal
-    cpu_time_used = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+    time_used = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
     printf("-----------------------------------\n");
-    printf("CPU time used: %lf seconds", cpu_time_used);
+    printf("time used: %lf seconds", time_used);
     return 0;
 }
