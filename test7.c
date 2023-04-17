@@ -19,7 +19,7 @@ int main()
     // define jumlah thread yang digunakan
     int num_threads = 12;
     omp_set_num_threads(num_threads);
-    clock_t start_time, end_time;
+    double start_time, end_time;
     double time_used;
 
     // membentuk matrix A ukuran NxN
@@ -33,7 +33,7 @@ int main()
         x[i] = 1.0;
     }
     // mencatat waktu awal sebelum algoritma dimulai
-    start_time = clock();
+    start_time = omp_get_wtime();
     // mulai algoritma
     for (iter = 0; iter < MAX_ITER; iter++)
     {
@@ -119,10 +119,10 @@ int main()
         lam_1 = lam;
     }
     printf("Iteration Count: %d\n", iter + 1);
-    // memcatat waktu akhir
-    end_time = clock();
+    // mencatat waktu akhir
+    end_time = omp_get_wtime();
     // menghitung running time berdasarkan waktu akhir dan waktu awal
-    time_used = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+    time_used = end_time - start_time;
     printf("-----------------------------------\n");
     printf("time used: %lf seconds", time_used);
     return 0;
