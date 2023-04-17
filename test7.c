@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <omp.h>
 #include <time.h>
 #include <math.h>
+#include <omp.h>
 
-#define N 700
+#define N 3
 #define MAX_ITER 1000
 
 int main()
@@ -18,44 +18,43 @@ int main()
     int i, j, k, iter;
     // define jumlah thread yang digunakan
     int num_threads = 12;
+    omp_set_num_threads(num_threads);
     clock_t start_time, end_time;
     double cpu_time_used;
-    omp_set_num_threads(num_threads);
-    // mencatat waktu awal sebelum algoritma dimulai
-    start_time = clock();
 
-// membentuk matrix ukuran nxn dengan nilai random
-#pragma omp parallel for private(i, j) shared(A, x)
+    // membentuk matrix ukuran nxn dengan nilai random
     for (i = 0; i < N; i++)
     {
         for (j = 0; j < N; j++)
         {
-            A[i][j] = rand();
+            printf("Insert matrix element: \n");
+            scanf("%d", &A[i][j]);
         }
         x[i] = 1.0;
     }
-
+    // mencatat waktu awal sebelum algoritma dimulai
+    start_time = clock();
     // mulai algoritma
     for (iter = 0; iter < MAX_ITER; iter++)
     {
-// y=A*x
+        // y=A*x
 #pragma omp parallel for private(i, j) shared(A, x, y)
         for (i = 0; i < N; i++)
         {
             y[i] = 0.0;
             for (j = 0; j < N; j++)
             {
+#pragma omp atomic
                 y[i] += A[i][j] * x[j];
             }
         }
         // yp = max(|y|)
         int n = sizeof(y) / sizeof(y[0]);
         double yp = fabs(y[0]);
-#pragma omp parallel for private(i) shared(yp)
+#pragma omp parallel for private(i) shared(y, yp)
         for (i = 1; i < n; i++)
         {
             double abs_val = fabs(y[i]);
-#pragma omp critical
             {
                 if (abs_val > yp)
                 {
@@ -83,12 +82,10 @@ int main()
         }
 
         double err = arr[0];
-
-#pragma omp parallel for private(i) shared(err)
+#pragma omp parallel for private(i) shared(err, arr)
         for (i = 1; i < f; i++)
         {
             double abs_val_1 = arr[i];
-#pragma omp critical
             {
                 if (abs_val_1 > err)
                 {
@@ -101,8 +98,12 @@ int main()
         for (i = 0; i < N; i++)
         {
             x[i] = y[i] / yp;
+        }
+        for (i = 0; i < N; i++)
+        {
             printf("%lf\n", x[i]);
         }
+
         printf("\n");
         // print error
         printf("Error: %lf\n", err);
