@@ -4,7 +4,7 @@
 #include <math.h>
 #include <omp.h>
 
-#define N 3
+#define N 3 // ukuran matrix
 #define MAX_ITER 1000
 
 int main()
@@ -22,7 +22,7 @@ int main()
     clock_t start_time, end_time;
     double time_used;
 
-    // membentuk matrix A ukuran nxn
+    // membentuk matrix A ukuran NxN
     for (i = 0; i < N; i++)
     {
         for (j = 0; j < N; j++)
@@ -75,7 +75,7 @@ int main()
         // menghitung error
         double arr[N];
         int f = sizeof(arr) / sizeof(arr[0]);
-#pragma omp parallel for private(i) shared(arr, x, y, yp)
+#pragma omp parallel for private(i) shared(arr, x, y, yp) schedule(dynamic)
         for (i = 0; i < f; i++)
         {
             arr[i] = fabs(x[i] - (y[i] / yp));
@@ -95,13 +95,15 @@ int main()
         }
         printf("Approx Dominant Eigenvector:\n");
 // mengupdate vektor x
-#pragma omp parallel for private(i) shared(x, y, yp)
+#pragma omp parallel for private(i) shared(x, y, yp) schedule(dynamic)
         for (i = 0; i < N; i++)
         {
             x[i] = y[i] / yp;
         }
+#pragma omp parallel for schedule(dynamic) ordered
         for (i = 0; i < N; i++)
         {
+#pragma omp ordered
             printf("%lf\n", x[i]);
         }
 
